@@ -1,4 +1,4 @@
-# mini-spring
+# learn-mini-spring
 
 #### 介绍
 学习郭屹老师的MiniSpring课程
