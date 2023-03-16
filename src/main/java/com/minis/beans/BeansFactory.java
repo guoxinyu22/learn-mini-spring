@@ -4,5 +4,7 @@ public interface BeansFactory {
 
     Object getBean(String beanName) throws BeansException;
 
-    void registerBeanDefiniation(BeanDefination beanDefination);
+    Boolean containsBean(String beanName);
+
+    void registerBean(String beanName,Object obj);
 }

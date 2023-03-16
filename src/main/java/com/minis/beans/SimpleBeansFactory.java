@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SimpleBeansFactory implements BeansFactory {
+public class SimpleBeansFactory extends DefaultSingletonBeanRegistry implements BeansFactory {
 
-    private List<BeanDefination> beanDefinations = new ArrayList<>();
-    private List<String> beanNames = new ArrayList<>();
-    private Map<String, Object> singletons = new HashMap<>();
+    private Map<String, BeanDefination> beanDefinitions = new HashMap<>();
 
     public SimpleBeansFactory(){
 
@@ -18,27 +16,36 @@ public class SimpleBeansFactory implements BeansFactory {
     @Override
     public Object getBean(String beanName) throws BeansException {
 
-        Object singleton = singletons.get(beanName);
+        Object singleton = this.getSingleton(beanName);
         if(singleton == null){
-            int i = beanNames.indexOf(beanName);
-            if(i == -1){
-                throw new BeansException("no such bean");
-            }else {
-                BeanDefination beanDefination = beanDefinations.get(i);
-                try{
-                    singleton = Class.forName(beanDefination.getClassName()).newInstance();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                singletons.put(beanDefination.getId(),singleton);
+
+            BeanDefination beanDefination = beanDefinitions.get(beanName);
+            if(beanDefination == null){
+                throw new BeansException("No such bean:"+beanName);
             }
+
+            try{
+                singleton = Class.forName(beanDefination.getClassName()).newInstance();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            this.registerSingleton(beanDefination.getId(),singleton);
         }
         return singleton;
     }
 
     @Override
-    public void registerBeanDefiniation(BeanDefination beanDefination) {
-        this.beanDefinations.add(beanDefination);
-        this.beanNames.add(beanDefination.getId());
+    public Boolean containsBean(String beanName) {
+        return containsSingleton(beanName);
+    }
+
+    @Override
+    public void registerBean(String beanName, Object obj) {
+        super.registerSingleton(beanName, obj);
+    }
+
+    public void registerBeanDefinition(BeanDefination beanDefination){
+        this.beanDefinitions.put(beanDefination.getId(),beanDefination);
     }
 }
