@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Read Java Bean information from xml file
  */
-public class ClassPathXmlApplicationContext implements BeansFactory{
+public class ClassPathXmlApplicationContext implements BeansFactory,ApplicationEventPublisher{
 
     BeansFactory beansFactory;
 
@@ -44,7 +44,22 @@ public class ClassPathXmlApplicationContext implements BeansFactory{
     }
 
     @Override
-    public void registerBean(String beanName, Object obj) {
-        this.beansFactory.registerBean(beanName,obj);
+    public boolean isSingleton(String name) {
+        return false;
+    }
+
+    @Override
+    public boolean isPrototype(String name) {
+        return false;
+    }
+
+    @Override
+    public Class<?> getType(String name) {
+        return null;
+    }
+
+    @Override
+    public void publishEvent(ApplicationEvent applicationEvent) {
+
     }
 }

@@ -38,7 +38,7 @@ public class ArgumentValues {
 
     public ArgumentValue getGenericArgumentValue(String requiredName){
         for(ArgumentValue valueHolder : this.genericArgumentsValues){
-            if(valueHolder.getValue() != null && (requiredName == null || !valueHolder.getName().equals(requiredName))){
+            if(valueHolder.getName() != null && (requiredName == null || !valueHolder.getName().equals(requiredName))){
                 continue;
             }
             return valueHolder;

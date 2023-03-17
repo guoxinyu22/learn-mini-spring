@@ -4,13 +4,62 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class SimpleBeansFactory extends DefaultSingletonBeanRegistry implements BeansFactory {
+public class SimpleBeansFactory extends DefaultSingletonBeanRegistry implements BeansFactory,BeanDefinitionRegistry {
 
-    private Map<String, BeanDefination> beanDefinitions = new HashMap<>();
+    private Map<String, BeanDefination> beanDefinitionMap = new ConcurrentHashMap<>(256);
+    private List<String> beanDefinitionNames =  new ArrayList<>();
 
     public SimpleBeansFactory(){
 
+    }
+
+    @Override
+    public void registerBeanDefinition(String name, BeanDefination beanDefination) {
+        this.beanDefinitionMap.put(name,beanDefination);
+        this.beanDefinitionNames.add(name);
+        // postponed
+        if(!beanDefination.isLazyInit()){
+            try {
+                getBean(name);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void removeBeanDefinition(String name) {
+        this.beanDefinitionMap.remove(name);
+        this.beanDefinitionNames.remove(name);
+        this.removeSingleton(name);
+    }
+
+    @Override
+    public BeanDefination getBeanDefinition(String name) {
+        return this.beanDefinitionMap.get(name);
+    }
+
+    @Override
+    public boolean containsBeanDefinition(String name) {
+        return this.beanDefinitionMap.containsKey(name);
+    }
+
+
+    @Override
+    public boolean isSingleton(String name) {
+        return this.beanDefinitionMap.get(name).isSingleton();
+    }
+
+    @Override
+    public boolean isPrototype(String name) {
+        return this.beanDefinitionMap.get(name).isPrototype();
+    }
+
+    @Override
+    public Class<?> getType(String name) {
+        return this.beanDefinitionMap.get(name).getClass();
     }
 
     @Override
@@ -19,7 +68,7 @@ public class SimpleBeansFactory extends DefaultSingletonBeanRegistry implements 
         Object singleton = this.getSingleton(beanName);
         if(singleton == null){
 
-            BeanDefination beanDefination = beanDefinitions.get(beanName);
+            BeanDefination beanDefination = beanDefinitionMap.get(beanName);
             if(beanDefination == null){
                 throw new BeansException("No such bean:"+beanName);
             }
@@ -38,14 +87,5 @@ public class SimpleBeansFactory extends DefaultSingletonBeanRegistry implements 
     @Override
     public Boolean containsBean(String beanName) {
         return containsSingleton(beanName);
-    }
-
-    @Override
-    public void registerBean(String beanName, Object obj) {
-        super.registerSingleton(beanName, obj);
-    }
-
-    public void registerBeanDefinition(BeanDefination beanDefination){
-        this.beanDefinitions.put(beanDefination.getId(),beanDefination);
     }
 }
