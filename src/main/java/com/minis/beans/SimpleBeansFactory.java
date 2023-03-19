@@ -13,6 +13,7 @@ public class SimpleBeansFactory extends DefaultSingletonBeanRegistry implements 
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
     private List<String> beanDefinitionNames = new ArrayList<>();
 
+
     public SimpleBeansFactory() {
 
     }
@@ -134,18 +135,25 @@ public class SimpleBeansFactory extends DefaultSingletonBeanRegistry implements 
                     String type = propertyValue.getType();
                     String name = propertyValue.getName();
                     Object value = propertyValue.getValue();
+                    boolean ref = propertyValue.isRef();
 
                     Class<?>[] paramTypes = new Class<?>[1];
-                    if ("string".equals(type) || "String".equals(type) || "java.lang.String".equals(type)) {
-                        paramTypes[0] = String.class;
-                    } else if ("Integer".equals(type) || "int".equals(type) || "java.lang.Integer".equals(type)) {
-                        paramTypes[0] = Integer.class;
-                    } else {
-                        paramTypes[0] = String.class;
-                    }
-
                     Object[] paramValues = new Object[1];
-                    paramValues[0] = value;
+
+                    if (!ref) {
+                        if ("string".equals(type) || "String".equals(type) || "java.lang.String".equals(type)) {
+                            paramTypes[0] = String.class;
+                        } else if ("Integer".equals(type) || "int".equals(type) || "java.lang.Integer".equals(type)) {
+                            paramTypes[0] = Integer.class;
+                        } else {
+                            paramTypes[0] = String.class;
+                        }
+                        paramValues[0] = value;
+                    } else {
+                        // is ref, create dependent beans
+                        paramTypes[0] = Class.forName(type);
+                        paramValues[0] = getBean((String) name);
+                    }
 
                     String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
                     Method method = null;

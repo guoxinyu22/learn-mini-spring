@@ -1,16 +1,23 @@
 package com.minis.test;
 
-public class AServieImpl implements AIService {
+public class AServiceImpl implements AIService {
 
     private String property1;
 
     private String property2;
 
-    public AServieImpl(String property1, String property2) {
+    private BServiceImpl bService;
+
+    public void setbService(BServiceImpl bService) {
+        this.bService = bService;
+        System.out.println(" AService set BService ");
+    }
+
+    public AServiceImpl(String name, Integer level) {
 //        this.property1 = property1;
 //        this.property2 = property2;
-        System.out.println(" constructor property1 value is : " + property1);
-        System.out.println(" constructor property2 value is : " + property2);
+        System.out.println(" constructor property1 value is : " + name);
+        System.out.println(" constructor property2 value is : " + level);
     }
 
     public void setProperty1(String property1) {
