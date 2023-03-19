@@ -5,12 +5,15 @@ public class ArgumentValue {
     private Object value;
     private String name;
 
+    public ArgumentValue() {
+    }
+
     public ArgumentValue(Object value, String type) {
         this.type = type;
         this.value = value;
     }
 
-    public ArgumentValue(String type, Object value, String name) {
+    public ArgumentValue(String type, String name, Object value) {
         this.type = type;
         this.value = value;
         this.name = name;

@@ -3,7 +3,7 @@ package com.minis.beans;
 /**
  * Defination of Java Bean
  */
-public class BeanDefination {
+public class BeanDefinition {
 
     String SCOPE_SINGLETON = "singleton";
 
@@ -27,7 +27,7 @@ public class BeanDefination {
 
     private String scope = SCOPE_SINGLETON;
 
-    public BeanDefination(String id, String className) {
+    public BeanDefinition(String id, String className) {
         this.id = id;
         this.className = className;
     }
