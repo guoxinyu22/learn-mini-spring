@@ -24,12 +24,15 @@ public class ClassPathXmlApplicationContext implements BeansFactory,ApplicationE
      * Read and Instantiate Java beans from xml
      * @param fileName bean definition xml file
      */
-    public ClassPathXmlApplicationContext(String fileName) {
+    public ClassPathXmlApplicationContext(String fileName,boolean isRefresh) {
         Resource resource = new ClassPathXmlResource(fileName);
         SimpleBeansFactory beansFactory = new SimpleBeansFactory();
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beansFactory);
         reader.loadBeanDefiniations(resource);
         this.beansFactory = beansFactory;
+        if(isRefresh){
+            beansFactory.refresh();
+        }
     }
 
 
