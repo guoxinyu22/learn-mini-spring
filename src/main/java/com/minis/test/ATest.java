@@ -9,7 +9,7 @@ public class ATest {
     public static void main(String[] args) throws Exception {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml",true);
         MyMainService myMainService = (MyMainService) ctx.getBean("myMainService");
-
+        myMainService.getAService().getBService().saySomething();
 
 
 

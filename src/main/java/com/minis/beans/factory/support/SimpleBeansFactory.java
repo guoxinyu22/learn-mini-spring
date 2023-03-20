@@ -1,7 +1,10 @@
-package com.minis.beans;
+package com.minis.beans.factory.support;
+
+import com.minis.beans.*;
+import com.minis.beans.factory.BeansFactory;
+import com.minis.beans.factory.config.*;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,16 +155,16 @@ public class SimpleBeansFactory extends DefaultSingletonBeanRegistry implements 
         Class<?> clazz = Class.forName(beanDefinition.getClassName());
         Constructor<?> constructor = null;
         Object object = null;
-        ArgumentValues constructorArgumentValues = beanDefinition.getConstructorArgumentValues();
+        ConstructorArgumentValues constructorArgumentValues = beanDefinition.getConstructorArgumentValues();
         if (constructorArgumentValues != null && !constructorArgumentValues.isEmpty()) {
             Class<?>[] paramTypes = new Class<?>[constructorArgumentValues.getArgumentCount()];
             Object[] paramValues = new Object[constructorArgumentValues.getArgumentCount()];
 
             for (int i = 0; i < constructorArgumentValues.getArgumentCount(); i++) {
-                ArgumentValue argumentValue = constructorArgumentValues.getIndexedArgumentValue(i);
-                String type = argumentValue.getType();
-                String name = argumentValue.getName();
-                Object value = argumentValue.getValue();
+                ConstructorArgumentValue constructorArgumentValue = constructorArgumentValues.getIndexedArgumentValue(i);
+                String type = constructorArgumentValue.getType();
+                String name = constructorArgumentValue.getName();
+                Object value = constructorArgumentValue.getValue();
                 // convert value type
                 if ("string".equals(type) || "String".equals(type) || "java.lang.String".equals(type)) {
                     paramTypes[i] = String.class;

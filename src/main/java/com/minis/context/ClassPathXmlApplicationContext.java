@@ -1,17 +1,11 @@
 package com.minis.context;
 
 import com.minis.beans.*;
+import com.minis.beans.factory.BeansFactory;
+import com.minis.beans.factory.support.SimpleBeansFactory;
+import com.minis.beans.factory.xml.XmlBeanDefinitionReader;
 import com.minis.core.ClassPathXmlResource;
 import com.minis.core.Resource;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Read Java Bean information from xml file

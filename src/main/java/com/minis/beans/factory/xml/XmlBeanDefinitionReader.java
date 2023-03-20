@@ -1,5 +1,9 @@
-package com.minis.beans;
+package com.minis.beans.factory.xml;
 
+import com.minis.beans.PropertyValue;
+import com.minis.beans.PropertyValues;
+import com.minis.beans.factory.config.*;
+import com.minis.beans.factory.support.SimpleBeansFactory;
 import com.minis.core.Resource;
 import org.dom4j.Element;
 
@@ -23,12 +27,12 @@ public class XmlBeanDefinitionReader {
 
             // read constructor
             List<Element> constructorElements = element.elements("constructor-arg");
-            ArgumentValues argumentValues = new ArgumentValues();
+            ConstructorArgumentValues constructorArgumentValues = new ConstructorArgumentValues();
             for (Element e : constructorElements) {
                 String name = e.attributeValue("name");
                 String type = e.attributeValue("type");
                 String value = e.attributeValue("value");
-                argumentValues.addArgumentValue(new ArgumentValue(type, name, value));
+                constructorArgumentValues.addArgumentValue(new ConstructorArgumentValue(type, name, value));
             }
 
 
@@ -62,7 +66,7 @@ public class XmlBeanDefinitionReader {
 
             BeanDefinition beanDefinition = new BeanDefinition(beanId, beanClassName);
             beanDefinition.setPropertyValues(propertyValues);
-            beanDefinition.setConstructorArgumentValues(argumentValues);
+            beanDefinition.setConstructorArgumentValues(constructorArgumentValues);
 
             // set refs
             beanDefinition.setDependsOn(refs.toArray(new String[0]));
