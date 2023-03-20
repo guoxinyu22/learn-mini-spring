@@ -8,9 +8,9 @@ public class AServiceImpl implements AIService {
 
     private BServiceImpl bService;
 
-    public void setbService(BServiceImpl bService) {
+    public void setBService(BServiceImpl bService) {
         this.bService = bService;
-        System.out.println(" AService set BService ");
+        System.out.println(" --->  AService set BService ");
     }
 
     public AServiceImpl(String name, Integer level) {
@@ -34,5 +34,9 @@ public class AServiceImpl implements AIService {
     public void sayHello() {
         System.out.println(" a service 1: say hello ");
         System.out.println(property1);
+    }
+
+    public BServiceImpl getBService() {
+        return bService;
     }
 }

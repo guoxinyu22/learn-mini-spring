@@ -2,10 +2,17 @@ package com.minis.test;
 
 public class BServiceImpl {
 
-    private MainService mainService;
+    private MyMainService myMainService;
 
-    public void setMainService(MainService mainService) {
-        this.mainService = mainService;
-        System.out.println("BService set mainService !");
+    public BServiceImpl() {
+    }
+
+    public void setMyMainService(MyMainService myMainService) {
+        this.myMainService = myMainService;
+        System.out.println(" ---> BService set mainService !");
+    }
+
+    public void saySomething() {
+        this.myMainService.getAService().sayHello();
     }
 }

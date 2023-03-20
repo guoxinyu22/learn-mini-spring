@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
-    <bean id="mainService" class="com.minis.test.MainService">
-<!--        <property type="com.minis.test.AServiceImpl" name="aService" ref="aService"/>-->
+    <bean id="myMainService" class="com.minis.test.MyMainService">
+        <property type="com.minis.test.AServiceImpl" name="aService" ref="aService"/>
+        <property type="com.minis.test.BServiceImpl" name="bService" ref="bService"/>
     </bean>
     <bean id="aService" class="com.minis.test.AServiceImpl">
         <constructor-arg type="String" name="name" value="abc"/>
         <constructor-arg type="Integer" name="level" value="3"/>
         <property type="String" name="property1" value="Someone says"/>
         <property type="String" name="property2" value="Hello World!"/>
-<!--        <property type="com.minis.test.BServiceImpl" name="ref1" ref="bService"/>-->
+        <property type="com.minis.test.BServiceImpl" name="bService" ref="bService"/>
     </bean>
-<!--    <bean id="bService" class="com.minis.test.BServiceImpl">-->
-<!--        <property type="com.minis.test.MainService" name="mainService" ref="mainService"/>-->
-<!--    </bean>-->
+    <bean id="bService" class="com.minis.test.BServiceImpl">
+        <property type="com.minis.test.MyMainService" name="myMainService" ref="myMainService"/>
+    </bean>
 </beans>
